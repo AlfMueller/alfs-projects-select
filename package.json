@@ -1,0 +1,135 @@
+{
+    "name": "alfs-projects-select",
+    "displayName": "Alfs Projects Select",
+    "description": "Quick access to your projects through a dedicated sidebar view",
+    "version": "1.0.1",
+    "icon": "images/icon.png",
+    "publisher": "purecrea",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AlfMueller/alfs-projects-select"
+    },
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "Project Management",
+        "Other Tools",
+        "Productivity"
+    ],
+    "keywords": [
+        "project",
+        "workspace",
+        "folder",
+        "management",
+        "explorer"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [{
+                "id": "project-explorer",
+                "title": "Projects",
+                "icon": "resources/project-icon.svg"
+            }]
+        },
+        "views": {
+            "project-explorer": [{
+                "id": "projectList",
+                "name": "Projects",
+                "type": "tree"
+            }]
+        },
+        "commands": [
+            {
+                "command": "projectList.searchProject",
+                "title": "Suche Projekt",
+                "icon": "$(search)"
+            },
+            {
+                "command": "projectList.addProject",
+                "title": "Add Project",
+                "icon": "$(add)"
+            },
+            {
+                "command": "projectList.deleteProject",
+                "title": "Delete Project",
+                "icon": "$(trash)"
+            },
+            {
+                "command": "projectList.openProject",
+                "title": "Open Project",
+                "icon": "$(folder-opened)"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "projectList.searchProject",
+                    "when": "view == projectList",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "projectList.addProject",
+                    "when": "view == projectList",
+                    "group": "navigation@2"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "projectList.openProject",
+                    "when": "view == projectList",
+                    "group": "inline"
+                },
+                {
+                    "command": "projectList.deleteProject",
+                    "when": "view == projectList",
+                    "group": "inline"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Project Selector",
+            "properties": {
+                "projectSelector.projects": {
+                    "type": "array",
+                    "default": [],
+                    "scope": "application",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Name of the project"
+                            },
+                            "path": {
+                                "type": "string",
+                                "description": "Path to the project"
+                            }
+                        }
+                    },
+                    "description": "List of available projects (Global for all workspaces)"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.80.0",
+        "@types/node": "^16.0.0",
+        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "eslint": "^8.0.0",
+        "typescript": "^5.0.0"
+    }
+} 
