@@ -10,6 +10,11 @@ interface ProjectItem {
 export class ProjectTreeProvider implements vscode.TreeDataProvider<ProjectTreeItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<ProjectTreeItem | undefined | null | void> = new vscode.EventEmitter<ProjectTreeItem | undefined | null | void>();
     readonly onDidChangeTreeData: vscode.Event<ProjectTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
+    private projects: ProjectItem[] = [];
+
+    constructor(initialProjects: ProjectItem[] = []) {
+        this.projects = initialProjects;
+    }
 
     refresh(): void {
         this._onDidChangeTreeData.fire();
@@ -24,11 +29,8 @@ export class ProjectTreeProvider implements vscode.TreeDataProvider<ProjectTreeI
             return [];
         }
 
-        const config = vscode.workspace.getConfiguration('projectSelector');
-        const projects = config.get('projects') as Array<ProjectItem> || [];
-
         // Sort projects by lastOpened (most recent first)
-        const sortedProjects = [...projects].sort((a, b) => {
+        const sortedProjects = [...this.projects].sort((a, b) => {
             const timeA = a.lastOpened || 0;
             const timeB = b.lastOpened || 0;
             return timeB - timeA;
@@ -40,6 +42,11 @@ export class ProjectTreeProvider implements vscode.TreeDataProvider<ProjectTreeI
             vscode.TreeItemCollapsibleState.None,
             project.lastOpened
         ));
+    }
+
+    updateProjects(newProjects: ProjectItem[]): void {
+        this.projects = newProjects;
+        this.refresh();
     }
 }
 

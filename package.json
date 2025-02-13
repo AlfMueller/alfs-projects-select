@@ -2,7 +2,7 @@
     "name": "alfs-projects-select",
     "displayName": "Alfs Projects Select",
     "description": "Quick access to your projects through a dedicated sidebar view",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "icon": "images/icon.png",
     "publisher": "purecrea",
     "repository": {
@@ -97,7 +97,7 @@
                 "projectSelector.projects": {
                     "type": "array",
                     "default": [],
-                    "scope": "application",
+                    "scope": "machine",
                     "items": {
                         "type": "object",
                         "properties": {
@@ -108,10 +108,15 @@
                             "path": {
                                 "type": "string",
                                 "description": "Path to the project"
+                            },
+                            "lastOpened": {
+                                "type": "number",
+                                "description": "Timestamp when the project was last opened"
                             }
-                        }
+                        },
+                        "required": ["name", "path"]
                     },
-                    "description": "List of available projects (Global for all workspaces)"
+                    "description": "List of available projects (Machine-wide setting)"
                 }
             }
         }
